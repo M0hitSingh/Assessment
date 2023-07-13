@@ -57,20 +57,5 @@ app.listen(process.env.PORT,()=>{
     console.log("App is running at http://localhost:%d ",process.env.PORT);
 });
 
-process.on("SIGTERM", shutDown);
-process.on("SIGINT", shutDown);
-// Shutdown express server gracefully.
 
-function shutDown() {
-    console.log("Received kill signal, shutting down gracefully");
-    server.close(() => {
-        console.log("Closed out remaining connections");
-        process.exit(0);
-    });
-
-    setTimeout(() => {
-        console.log("Could not close connections in time, forcefully shutting down");
-        process.exit(1);
-    }, 10000);
-}
 module.exports = app;

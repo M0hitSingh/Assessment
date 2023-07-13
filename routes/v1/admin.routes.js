@@ -6,14 +6,10 @@ const { authorization } = require("../../middleware/authorization");
 
 
 /**
- * Endpoint: /v1/community
+ * Endpoint: /v1/admin
 */
 
-router.post("/",authorization,createCommunity)
-router.get("/",authorization,getCommunity)
-router.get('/:id/members',authorization,getCommunityMember)
-router.get('/me/owner',authorization,myOwnCommunity)
-
+// router.post("/add/problem",signup);
 
 
 

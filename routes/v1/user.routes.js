@@ -9,8 +9,7 @@ const { authorization } = require("../../middleware/authorization");
  * Endpoint: /v1/member
 */
 
-router.post("/",authorization,addMember)
-router.delete("/:id",authorization,removeMember)
+
 
 
 

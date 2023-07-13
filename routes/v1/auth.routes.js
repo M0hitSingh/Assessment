@@ -10,7 +10,6 @@ const {authorization} = require("../../middleware/authorization")
 
 router.post("/signup",signup);
 router.post("/login",login);
-router.route("/me").get(authorization,getMe)
 
 
 module.exports = router;
