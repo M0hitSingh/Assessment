@@ -8,6 +8,7 @@ const testcase = require("../model/testcase");
 const { resolve } = require("path");
 const problem = require("../model/problem");
 const APIFeatures = require("../util/APIfeature");
+const Email = require('../util/sendgrid')
 // submit a solution
 
 const submit = asyncWrapper(async(req,res,next)=>{
@@ -22,12 +23,13 @@ const submit = asyncWrapper(async(req,res,next)=>{
                 source: `${req.body.source}`,
                 input: tests.input
             }
-        },function(error,response,body){
+        },async function(error,response,body){
             if (error) {
                 console.log('Connection problem');
             }
             if (response) {
                 if (response.statusCode === 201) {
+                    await Email.sendEmail(req.user.details.email,response.body);
                     return res.json(sendSuccessApiResponse(JSON.parse(response.body),200));
                 } else {
                     if (response.statusCode === 401) {
@@ -98,7 +100,6 @@ const result = asyncWrapper(async (req,res,next)=>{
             data ='';
             const sleep = ms => new Promise(res => setTimeout(res, ms));
             const url = (doc.result.streams.output==null)? doc.result.streams.cmpinfo.uri : doc.result.streams.output.uri;
-            console.log(url)
             https.get(url,(res)=>{
                 res.on('data', (chunk) => {
                     data += chunk;
@@ -118,6 +119,7 @@ const result = asyncWrapper(async (req,res,next)=>{
                 "output":data,
                 "solution": (tests.output==data)? "Correct Output" : `Incorrect Output : ${data}`
             }
+            await Email.sendEmail(req.user.details.email,result);
             return res.json(sendSuccessApiResponse(result,200));
 
         })
