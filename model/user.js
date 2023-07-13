@@ -36,8 +36,15 @@ const userSchema = new mongoose.Schema({
             message: "Please choose role from User, Admin",
         }
     },
+    created_at:{
+        type:Date,
+        default: Date.now
+    },
+    updated_at:{
+        type:Date,
+        default: Date.now
+    },
 },
-{ timestamps:true },
 {
     methods:{
         generateJWT(){

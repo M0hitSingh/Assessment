@@ -8,7 +8,7 @@ const { sendSuccessApiResponse } = require("../middleware/successApiResponse");
 const signup = asyncWrapper(async (req,res,next)=>{
     try{
         const { name, email, password } = req.body;
-        const emailExists = await User.findOne({ email, isActive: true , isVerified:true});
+        const emailExists = await User.findOne({email:email});
         if (emailExists) {
             const message = "Email is already registered";
             return next(createCustomError(message, 406));

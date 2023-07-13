@@ -6,4 +6,4 @@ const adminRestrict = asyncWrapper(async(req,res,next)=>{
     else next(createCustomError("Access Denied"));
 })
 
-module.exports = adminRestrict;
+module.exports = {adminRestrict};
