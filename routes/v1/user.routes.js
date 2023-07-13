@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const {} = require('../../controllers/user.controller');
+const {submit,result} = require('../../controllers/user.controller');
 const { authorization } = require("../../middleware/authorization");
 
 
 /**
- * Endpoint: /v1/member
+ * Endpoint: /v1/user
 */
 
 
+router.post("/submit",authorization,submit);
+router.get("/result/:id",authorization,result);
 
 
 
