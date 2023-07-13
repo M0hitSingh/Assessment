@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {submit,result} = require('../../controllers/user.controller');
+const {submit,result,allProblem} = require('../../controllers/user.controller');
 const { authorization } = require("../../middleware/authorization");
 
 
@@ -12,6 +12,7 @@ const { authorization } = require("../../middleware/authorization");
 
 router.post("/submit",authorization,submit);
 router.get("/result/:id",authorization,result);
+router.get("/problem/all",authorization,allProblem)
 
 
 

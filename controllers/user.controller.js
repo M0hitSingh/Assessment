@@ -6,7 +6,8 @@ const {createCustomError} = require('../errors/customAPIError')
 const { sendSuccessApiResponse } = require("../middleware/successApiResponse");
 const testcase = require("../model/testcase");
 const { resolve } = require("path");
-
+const problem = require("../model/problem");
+const APIFeatures = require("../util/APIfeature");
 // submit a solution
 
 const submit = asyncWrapper(async(req,res,next)=>{
@@ -48,10 +49,10 @@ const submit = asyncWrapper(async(req,res,next)=>{
         return next(createCustomError(err,400));
     }
 });
-let data ='';
 const result = asyncWrapper(async (req,res,next)=>{
     try{
         const submissionId = req.params.id;
+        let data ='';
         const questionId = req.query.questionId
         const tests = await testcase.findOne({questionId:questionId});
         let doc;
@@ -129,10 +130,25 @@ const result = asyncWrapper(async (req,res,next)=>{
     }
 })
 
-async function getDataChunks(url){
-    let d = '';
-    
-    data += d;
-}
+const allProblem = asyncWrapper(async(req,res,next)=>{
+    try{
+        const total = await problem.countDocuments();
+        const {
+            query,
+            page:page,
+            limit:limit,
+        } = new APIFeatures(problem.find(),req.query)
+        .page();
+        const data = await query.query;
+        res.json(sendSuccessApiResponse(data,{
+            "total":total,
+            "pages":limit,
+            "page":page
+        }));
+    }
+    catch(err){
+        return next(createCustomError(err,400));
+    }
+});
 
-module.exports = {submit,result}
+module.exports = {submit,result,allProblem}
